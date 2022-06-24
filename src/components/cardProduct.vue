@@ -3,11 +3,11 @@
     <div class="card__delete-btn" @click="deleteCard()">
       <img class="card__delete-icon" src="../assets/icon/delete.svg" alt="">
     </div>
-    <img class="card__img" :src="`${item[2]}`" alt="">
+    <img class="card__img" :src="item.link" :alt="item.title">
     <div class="card__description">
-      <h2 class="card__description-title"> {{ item[0] }} </h2>
-      <p class="card__description-subtitle">  {{ item[1] }}</p>
-      <p class="card__price"> {{ Math.round(item[3]).toLocaleString('ru') }} руб.</p>
+      <h2 class="card__description-title"> {{ item.title }} </h2>
+      <p class="card__description-subtitle">  {{ item.textarea }}</p>
+      <p class="card__price"> {{ Math.round(item.price).toLocaleString('ru') }} руб.</p>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: 'CardProduct',
   props: {
     item: {
-      type: Array
+      type: Object
     }
   },
   methods: {

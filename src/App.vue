@@ -13,10 +13,10 @@
   </header>
    <main class="main">
       <aside class="main__form-wrapper">
-        <form-vue :inputValue="inputValue" @addCard="addCard"/>
+        <form-vue @addCard="addCard"/>
       </aside>
       <aside class="main__content-wrapper">
-       <card-product v-for="(item, id) in sortCard" :item="item" :key="id" @deleteCard="deleteCard(id)" />
+       <card-product v-for="item in card" :key="item.id" :item="item" />
       </aside>
     </main>
   </div>
@@ -37,51 +37,29 @@ export default {
     return {
       title: 'Добавление товара',
       selected: '',
-      searchText: '',
       options: [
         { select: 'По умолчанию', value: 'default' },
         { select: 'По цене max', value: 'max' },
         { select: 'По цене min', value: 'min' },
         { select: 'По наименованию', value: 'name' },
       ],
-      inputValue: [
-        { model: null, type: 'text', placeholder: 'Введите наименование товара', title: 'Наименование товара'},
-        { model: null, type: 'text', placeholder: 'Введите описание товара', title: 'Описание товара'},
-        { model: null, type: 'text', placeholder: 'Введите ссылку', title: 'Ссылка на изображение товара'},
-        { model: null, type: 'number', placeholder: 'Введите цену', title: 'Цена товара'},
-      ],
       card: [],
     }
   },
   methods: {
-    addCard() {
-      const newCard = this.inputValue.map( el => el.model);
-      this.card.push(newCard)
-      this.inputValue.forEach( el => el.model = null )
-    },
-    deleteCard(id) {
-      this.sortCard.splice(id, 1)
+    addCard(model) {
+      this.card.push(model)
     }
   },
   computed: {
-    sortCard() {
-      return this.card.sort( (a, b) => {
-        if ( this.selected === 'min' ) {
-          return a[3] - b[3]
-        }
-        if( this.selected === 'max' ) {
-          return b[3] - a[3]
-        }
-        if( this.selected === 'name' ) {
-          let nameA=a[0].toLowerCase(), nameB=b[0].toLowerCase()
-          if (nameA < nameB)
-            return -1
-          if (nameA > nameB)
-            return 1
-          return 0
-        }
-      } )
+   
+  },
+  mounted() {
+    const data = localStorage.getItem('card');
+    if(data) {
+      this.card = JSON.parse(data);
     }
+    
   }
 }
 </script>

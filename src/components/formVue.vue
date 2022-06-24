@@ -1,16 +1,46 @@
 <template>
   <form action="" class="form" @submit.prevent="onSubmit">
-    <div class="form__input-wrapper" v-for="(item, id) in inputValue" :key="id">
+    <div class="form__input-wrapper">
       <div class="form__input-title-wrapper">
         <p class="form__input-title">
-        {{ item.title }}
+          Наименование товара
         </p>
         <div class="form__input-title-dot"></div>
       </div>
-      <input class="form__input" :type="item.type" :placeholder="item.placeholder" v-model="item.model" :id="id" autocomplete="off"/>
-      <textarea class="form__textarea" name="" id="" :placeholder="item.title" v-model="item.model"></textarea>
-      <label class="form__label" :for="id">Поле является обязательным</label>
+      <input class="form__input" type="text" placeholder="" v-model="model.title" autocomplete="off"/>
+      <label class="form__label" for="id">Поле является обязательным</label>
     </div>
+    <div class="form__input-wrapper">
+      <div class="form__input-title-wrapper">
+        <p class="form__input-title">
+          Описание товара
+        </p>
+        <div class="form__input-title-dot"></div>
+      </div>
+      <textarea class="form__textarea" v-model="model.textarea"></textarea>
+      <label class="form__label" for="id">Поле является обязательным</label>
+    </div>
+     <div class="form__input-wrapper">
+      <div class="form__input-title-wrapper">
+        <p class="form__input-title">
+          Ссылка на изображение товара
+        </p>
+        <div class="form__input-title-dot"></div>
+      </div>
+      <input class="form__input" type="text" placeholder="" v-model="model.link" autocomplete="off"/>
+      <label class="form__label" for="id">Поле является обязательным</label>
+    </div>
+    <div class="form__input-wrapper">
+      <div class="form__input-title-wrapper">
+        <p class="form__input-title">
+          Цена товара
+        </p>
+        <div class="form__input-title-dot"></div>
+      </div>
+      <input class="form__input" type="text" placeholder="" v-model="model.price" autocomplete="off"/>
+      <label class="form__label" for="id">Поле является обязательным</label>
+    </div>
+    
     <button class="form__btn">Добавить товар</button>
   </form>
 </template>
@@ -18,15 +48,27 @@
 <script>
 export default {
   name: 'FormVue',
-  props: {
-    inputValue: {
-      type: Array,
-      default: []
-    },
+  data() {
+    return {
+      model: {
+        title: null,
+        textarea: null,
+        link: null,
+        price: null
+      }
+
+    }
   },
   methods: {
     onSubmit() {
-      this.$emit('addCard')
+      this.model.id = Date.now()
+      this.$emit('addCard', this.model)
+      this.model = {
+        title: null,
+        textarea: null,
+        link: null,
+        price: null
+      }
     }
   },
 }
@@ -44,27 +86,10 @@ export default {
     display: flex;
     flex-direction: column;
     }
-    &__input-wrapper > textarea {
-      display: none;
-    }
     &__input-wrapper:nth-child(2) > &__input-title-wrapper > &__input-title-dot {
       display: none;
     }
-    &__input-wrapper:nth-child(2) > input {
-      height: 108px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    &__input-wrapper:nth-child(2) > input::placeholder {
-      color: #FF8484;
-      display: flex;
-      flex-direction: column;
-    }
-    &__input-wrapper:nth-child(2) > input {
-      display: none;
-    }
-    &__input-wrapper:nth-child(2) > textarea {
+    &__textarea {
       display: flex;
       height: 108px;
       padding: 10px 16px;
@@ -74,16 +99,6 @@ export default {
       border: none;
       resize: none;
       outline: none;
-      margin-bottom: 16px;
-    }
-    &__input-wrapper:nth-child(2) > textarea::placeholder {
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 15px;
-      color: #B4B4B4;
-    }
-    &__input-wrapper:nth-child(2) > label {
-      display: none;
     }
     &__input-title-wrapper {
       display: flex;
