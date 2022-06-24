@@ -16,7 +16,7 @@
         <form-vue :inputValue="inputValue" @addCard="addCard"/>
       </aside>
       <aside class="main__content-wrapper">
-       <card-product v-for="(item, id) in card" :item="item" :key="id"/>
+       <card-product v-for="(item, id) in sortCard" :item="item" :key="id" @deleteCard="deleteCard(id)" />
       </aside>
     </main>
   </div>
@@ -58,8 +58,31 @@ export default {
       const newCard = this.inputValue.map( el => el.model);
       this.card.push(newCard)
       this.inputValue.forEach( el => el.model = null )
+    },
+    deleteCard(id) {
+      this.sortCard.splice(id, 1)
     }
   },
+  computed: {
+    sortCard() {
+      return this.card.sort( (a, b) => {
+        if ( this.selected === 'min' ) {
+          return a[3] - b[3]
+        }
+        if( this.selected === 'max' ) {
+          return b[3] - a[3]
+        }
+        if( this.selected === 'name' ) {
+          let nameA=a[0].toLowerCase(), nameB=b[0].toLowerCase()
+          if (nameA < nameB)
+            return -1
+          if (nameA > nameB)
+            return 1
+          return 0
+        }
+      } )
+    }
+  }
 }
 </script>
 
