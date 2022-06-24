@@ -7,8 +7,8 @@
         </p>
         <div class="form__input-title-dot"></div>
       </div>
-      <input class="form__input" type="text" placeholder="" v-model="model.title" autocomplete="off"/>
-      <label class="form__label" for="id">Поле является обязательным</label>
+      <input class="form__input" :class="{ 'form__input-active' : !isActive.isTitle }" type="text" placeholder="" v-model="model.title" autocomplete="off"/>
+      <label class="form__label" :class="{ 'form__label-activ' : !isActive.isTitle }" for="id">Поле является обязательным</label>
     </div>
     <div class="form__input-wrapper">
       <div class="form__input-title-wrapper">
@@ -27,8 +27,8 @@
         </p>
         <div class="form__input-title-dot"></div>
       </div>
-      <input class="form__input" type="text" placeholder="" v-model="model.link" autocomplete="off"/>
-      <label class="form__label" for="id">Поле является обязательным</label>
+      <input class="form__input" :class="{ 'form__input-active' : !isActive.isLink }" type="text" placeholder="" v-model="model.link" autocomplete="off"/>
+      <label class="form__label" :class="{ 'form__label-activ' : !isActive.isLink }" for="id">Поле является обязательным</label>
     </div>
     <div class="form__input-wrapper">
       <div class="form__input-title-wrapper">
@@ -37,11 +37,11 @@
         </p>
         <div class="form__input-title-dot"></div>
       </div>
-      <input class="form__input" type="text" placeholder="" v-model="model.price" autocomplete="off"/>
-      <label class="form__label" for="id">Поле является обязательным</label>
+      <input class="form__input" :class="{ 'form__input-active' : !isActive.isPrice }" type="number" placeholder="" v-model="model.price" autocomplete="off"/>
+      <label class="form__label" :class="{ 'form__label-activ' : !isActive.isPrice }" for="id">Поле является обязательным</label>
     </div>
     
-    <button class="form__btn">Добавить товар</button>
+    <button class="form__btn" :disabled='isDisabled'>Добавить товар</button>
   </form>
 </template>
 
@@ -51,12 +51,19 @@ export default {
   data() {
     return {
       model: {
+        id: Date.now(),
         title: null,
         textarea: null,
         link: null,
         price: null
-      }
-
+      },
+      isActive: {
+        isTitle: true,
+        isTextarea: true,
+        isLink: true,
+        isPrice: true
+      },
+      disabled: true
     }
   },
   methods: {
@@ -69,8 +76,52 @@ export default {
         link: null,
         price: null
       }
+      this.isActive = {
+        isTitle: true,
+        isTextarea: true,
+        isLink: true,
+        isPrice: true
+      }
     }
   },
+  computed: {
+    isDisabled () {
+      if( this.model.title === '' || this.model.title === null) {
+        return true
+      }else if( this.model.link === '' || this.model.link === null ){
+        return true
+      }else if ( this.model.price === '' || this.model.price === null ) {
+        return true
+      }
+    }
+  },
+  watch: {
+   model: {
+     handler(newTitle, oldTitle) {
+       if(newTitle.title === '') {
+         this.isActive.isTitle = false
+       }else {
+         this.isActive.isTitle = true
+       }
+       if(newTitle.textarea === '') {
+         this.isActive.isTextarea = false
+       }else {
+         this.isActive.isTextarea = true
+       }
+       if(newTitle.link === '') {
+         this.isActive.isLink = false
+       }else {
+         this.isActive.isLink = true
+       }
+       if(newTitle.price === '') {
+         this.isActive.isPrice = false
+       }else {
+         this.isActive.isPrice = true
+       }
+     },
+     deep: true
+   },
+  }
 }
 </script>
 
@@ -118,13 +169,16 @@ export default {
       border-radius: 2px;
     }
     &__input {
-      padding: 10px 16px 11px 16px;
+      padding: 9px 15px 10px 15px;
       background: #FFFEFB;
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
       border-radius: 4px;
       line-height: 15px;
+      border: 1px solid rgba(0, 0, 0, 0.0);
     }
-    
+    &__input-active {
+      border: 1px solid #FF8484;
+    }
     &__input::placeholder {
       font-size: 12px;
       color: #B4B4B4;
@@ -137,18 +191,26 @@ export default {
       padding: 4px 0 2px 0;
       opacity: 0;
     }
+    &__label-activ {
+      opacity: 1;
+    }
     &__btn {
-      background: #EEEEEE;
+      background: #7BAE73;;
       border-radius: 10px;
       width: 100%;
       margin-top: 8px;
       padding: 10px 96px;
       border: none;
-      color: #B4B4B4;
+      color: #FFFFFF;
       font-weight: 600;
       font-size: 12px;
       line-height: 15px;
       letter-spacing: -0.02em;
+    }
+    &__btn:disabled {
+      background: #EEEEEE;
+      color: #B4B4B4;
+      cursor: not-allowed;
     }
   }
   

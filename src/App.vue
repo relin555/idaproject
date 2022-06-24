@@ -16,7 +16,7 @@
         <form-vue @addCard="addCard"/>
       </aside>
       <aside class="main__content-wrapper">
-       <card-product v-for="item in card" :key="item.id" :item="item" />
+       <card-product v-for="(item, id) in sortCard" :key="item.id" :item="item" @deleteCard="deleteCard(id)" />
       </aside>
     </main>
   </div>
@@ -48,11 +48,36 @@ export default {
   },
   methods: {
     addCard(model) {
-      this.card.push(model)
+      this.card.push(model);
+      this.localCard();
+    },
+    deleteCard(id) {
+      this.card.splice(id,1);
+      this.localCard();
+    },
+    localCard() {
+      localStorage.setItem('card', JSON.stringify(this.card));
     }
   },
   computed: {
-   
+    sortCard() {
+      return this.card.sort( (a,b) => {
+        if( this.selected === 'min' ) {
+          return a.price - b.price
+        }
+        if( this.selected === 'max' ) {
+          return b.price - a.price
+        }
+        if( this.selected === 'name' ) {
+         let titleA=a.title.toLowerCase(), titleB=b.title.toLowerCase()
+          if (titleA < titleB)
+            return -1
+          if (titleA > titleB)
+            return 1
+          return 0
+        }
+      })
+    }
   },
   mounted() {
     const data = localStorage.getItem('card');
