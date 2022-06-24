@@ -1,5 +1,6 @@
 <template>
-  <header class="header">
+  <div class="app">
+      <header class="header">
     <div class="header__inner">
       <h1 class="header__title"> {{ title }} </h1>
       <div class="header__selected-wrapper">
@@ -9,27 +10,34 @@
         </select>
       </div>
     </div>
-    <main class="main">
-      <aside class="main__form-wrapper">
-        <form-vue :inputValue="inputValue"/>
-      </aside>
-      <aside class="main__content-wrapper"></aside>
-    </main>
   </header>
+   <main class="main">
+      <aside class="main__form-wrapper">
+        <form-vue :inputValue="inputValue" @addCard="addCard"/>
+      </aside>
+      <aside class="main__content-wrapper">
+       <card-product v-for="(item, id) in card" :item="item" :key="id"/>
+      </aside>
+    </main>
+  </div>
 </template>
 
 <script>
-import FormVue from './components/formVue.vue'
+import CardProduct from './components/cardProduct.vue';
+import FormVue from './components/formVue.vue';
 
 export default {
   name: 'App',
   components: {
-    FormVue
+    FormVue,
+    CardProduct,
+    
   },
   data() {
     return {
       title: 'Добавление товара',
       selected: '',
+      searchText: '',
       options: [
         { select: 'По умолчанию', value: 'default' },
         { select: 'По цене max', value: 'max' },
@@ -37,13 +45,21 @@ export default {
         { select: 'По наименованию', value: 'name' },
       ],
       inputValue: [
-        { type: 'text', placeholder: 'Введите наименование товара', title: 'Наименование товара'},
-        { type: 'text', placeholder: 'Введите описание товара', title: 'Описание товара'},
-        { type: 'email', placeholder: 'Введите ссылку', title: 'Ссылка на изображение товара'},
-        { type: 'number', placeholder: 'Введите цену', title: 'Цена товара'},
-      ]
+        { model: null, type: 'text', placeholder: 'Введите наименование товара', title: 'Наименование товара'},
+        { model: null, type: 'text', placeholder: 'Введите описание товара', title: 'Описание товара'},
+        { model: null, type: 'text', placeholder: 'Введите ссылку', title: 'Ссылка на изображение товара'},
+        { model: null, type: 'number', placeholder: 'Введите цену', title: 'Цена товара'},
+      ],
+      card: [],
     }
-  }
+  },
+  methods: {
+    addCard() {
+      const newCard = this.inputValue.map( el => el.model);
+      this.card.push(newCard)
+      this.inputValue.forEach( el => el.model = null )
+    }
+  },
 }
 </script>
 
@@ -56,6 +72,8 @@ export default {
     font-family: 'Source Sans Pro', sans-serif;
     color: #3F3F3F;
     font-weight: 400;
+    line-height: 15px;
+    font-size: 12px;
   }
   body {
     max-width: 1440px;
@@ -95,5 +113,10 @@ export default {
     padding: 0 32px;
     display: flex;
     position: relative;
+    &__content-wrapper {
+      padding-left: 348px;
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 </style>

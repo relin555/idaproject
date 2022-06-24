@@ -1,14 +1,14 @@
 <template>
   <form action="" class="form" @submit.prevent="onSubmit">
-    <div class="form__input-wrapper" v-for="(item, id ) in inputValue" :key="id">
+    <div class="form__input-wrapper" v-for="(item, id) in inputValue" :key="id">
       <div class="form__input-title-wrapper">
         <p class="form__input-title">
         {{ item.title }}
         </p>
         <div class="form__input-title-dot"></div>
       </div>
-      <input class="form__input" :type="item.type" :placeholder="item.placeholder" :id="id"/>
-      <textarea class="form__textarea" name="" id="" :placeholder="item.title"></textarea>
+      <input class="form__input" :type="item.type" :placeholder="item.placeholder" v-model="item.model" :id="id" autocomplete="off"/>
+      <textarea class="form__textarea" name="" id="" :placeholder="item.title" v-model="item.model"></textarea>
       <label class="form__label" :for="id">Поле является обязательным</label>
     </div>
     <button class="form__btn">Добавить товар</button>
@@ -22,11 +22,11 @@ export default {
     inputValue: {
       type: Array,
       default: []
-    }
+    },
   },
   methods: {
     onSubmit() {
-      console.log('great!!!')
+      this.$emit('addCard')
     }
   },
 }
@@ -120,6 +120,7 @@ export default {
       letter-spacing: -0.02em;
       color: #FF8484;
       padding: 4px 0 2px 0;
+      opacity: 0;
     }
     &__btn {
       background: #EEEEEE;
