@@ -1,5 +1,6 @@
 <template>
   <form action="" class="form" @submit.prevent="onSubmit">
+    <div class="form__phone-closed-btn" @click="closeFormPhone">x</div>
     <div class="form__input-wrapper">
       <div class="form__input-title-wrapper">
         <p class="form__input-title">Наименование товара</p>
@@ -123,6 +124,9 @@ export default {
         isPrice: true,
       };
     },
+    closeFormPhone() {
+      this.$emit("closeFormPhone");
+    },
   },
   computed: {
     isDisabled() {
@@ -175,6 +179,9 @@ export default {
   position: sticky;
   top: 24px;
   width: 332px;
+  &__phone-closed-btn {
+    display: none;
+  }
   &__input-wrapper {
     display: flex;
     flex-direction: column;
@@ -257,6 +264,57 @@ export default {
     background: #eeeeee;
     color: #b4b4b4;
     cursor: not-allowed;
+  }
+}
+
+// убираем стрелки у input с типом number
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+@media (max-width: 1439px) {
+  .form {
+    padding: 16px;
+    top: 16px;
+    width: 280px;
+    &__textarea {
+      display: flex;
+      height: 60px;
+      padding: 6px 12px;
+      background: #fffefb;
+    }
+    &__textarea::placeholder {
+      font-size: 10px;
+    }
+    &__input {
+      padding: 5px 10px;
+    }
+    &__input::placeholder {
+      font-size: 10px;
+    }
+    &__btn {
+      margin-top: 8px;
+      padding: 6px 65px;
+      font-size: 10px;
+    }
+  }
+}
+@media (max-width: 590px) {
+  .form__phone-closed-btn {
+    display: block;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
   }
 }
 </style>
