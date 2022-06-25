@@ -26,6 +26,8 @@
         <form-vue
           @addCard="addCard"
           @closeFormPhone="closeFormPhone"
+          class="main__form-phone-position"
+          :style="{ left: widthleftMenu }"
           :class="{ 'main__form-active': isMenuPhone }"
         />
       </aside>
@@ -62,6 +64,7 @@ export default {
       title: "Добавление товара",
       selected: "",
       isMenuPhone: false,
+      widthleftMenu: null,
       options: [
         { select: "По умолчанию", value: "default" },
         { select: "По цене max", value: "max" },
@@ -110,11 +113,25 @@ export default {
       });
     },
   },
+  watch: {
+    isMenuPhone(newOpen , oldClosed) {
+      if(newOpen) {
+        this.widthleftMenu = ((this.widthBody - this.putFormWidth) / 2) + 'px'
+      }
+      if(!newOpen) {
+        this.widthleftMenu = 101 + '%'
+      }
+    },
+  },
   mounted() {
     const data = localStorage.getItem("card");
     if (data) {
       this.card = JSON.parse(data);
     }
+    let getBody = document.querySelector('body')
+    let getForm = document.querySelector('.main__form-phone-position')
+    this.widthBody = getBody.clientWidth
+    this.putFormWidth = getForm.clientWidth
   },
 };
 </script>
@@ -280,7 +297,6 @@ input {
       z-index: 0;
       top: 70px;
       z-index: 1;
-      left: 50px;
       transition: 0.3s;
     }
     &__form-wrapper-active {
