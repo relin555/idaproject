@@ -1,16 +1,16 @@
 <template>
   <div class="app">
-      <header class="header">
-    <div class="header__inner">
-      <h1 class="header__title"> {{ title }} </h1>
-      <div class="header__selected-wrapper">
-        <select class='header__selected-options' v-model="selected">
-          <option disabled value="">По умолчанию</option>
-          <option class="header__selected-option" v-for="item in options" :key="item.value" :value="item.value"> {{ item.select }} </option>
-        </select>
+    <header class="header">
+      <div class="header__inner">
+        <h1 class="header__title"> {{ title }} </h1>
+        <div class="header__selected-wrapper">
+          <select class='header__selected-options' v-model="selected">
+            <option disabled value="">По умолчанию</option>
+            <option class="header__selected-option" v-for="item in options" :key="item.value" :value="item.value"> {{ item.select }} </option>
+          </select>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
    <main class="main">
       <aside class="main__form-wrapper">
         <form-vue @addCard="addCard"/>
@@ -120,10 +120,25 @@ export default {
       justify-content: space-between;
       padding: 32px 32px 16px 32px;
     }
-    &__title {
-
+    &__selected-wrapper {
+      position: relative;
+    }
+     &__selected-wrapper:after {
+      content: "";
+      background: url('./assets/icon/arrowdown.svg') no-repeat;
+      position: absolute;
+      pointer-events: none;
+      width: 8px;
+      height: 5px;
+      top: 16px;
+      right: 16px;
+    }
+    &__selected-wrapper > select {
+      appearance: none;
+      -webkit-appearance: none;
     }
     &__selected-options {
+      width: 121px;
       border: none;
       font-size: 12px;
       color: #B4B4B4;
@@ -134,13 +149,18 @@ export default {
       padding: 10px 0px 10px 16px;
       cursor: pointer;
     }
+    &__title  {
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 35px;
+    }
   }
   .main {
     padding: 0 32px;
     display: flex;
     position: relative;
     &__content-wrapper {
-      padding-left: 348px;
+      padding-left: 16px;
       display: flex;
       flex-wrap: wrap;
     }
