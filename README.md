@@ -3,6 +3,8 @@
 ## Project setup
 ```
 npm install
+node-version v16.14.2
+
 ```
 
 ### Compiles and hot-reloads for development
